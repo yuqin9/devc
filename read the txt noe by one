@@ -1,0 +1,37 @@
+//1.打开一个文件
+//2.逐个字符地读取该文件，直到文件末尾
+//3.指出该文件中包含多少个字符
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+const int Arsize = 60;
+int main() {
+    using namespace std;
+    string c;
+	char fileName[Arsize];
+    int count = 0;
+    cout << "Please enter the file's name:\n";
+    cin.getline(fileName, Arsize);
+    fstream inFile,outfile;
+    inFile.open(fileName);
+    if (!inFile.is_open()) {
+        cout << "Could not find the file\n";
+        cout << "Program terminating\n";
+        exit(EXIT_FAILURE);
+    }
+    inFile >> c;//如果不在循环外先读取一个会把空的给输出 
+    while (!inFile.eof()) {
+        if (inFile.good()) {
+            count++;
+            cout<<c<<endl;
+            inFile >> c;//用来前进代码用的 
+ 
+        }
+        /*else
+        {
+            inFile.get();
+        }*/
+    }
+    cout <<"The file include "<< count <<" characters."<< endl;
+    system("pause");
+}
