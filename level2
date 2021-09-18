@@ -1,0 +1,75 @@
+#include <iostream>
+#include <string>
+#include <fstream>//打开文件专用,并且后续需要通过这个头文件，设置输入输出流派 
+#include <cstdlib>
+#include <vector>
+using namespace std;
+int main() {
+  int size=60,level,total=0,back,switchnum=0,j,k=0,casenum[50];
+  string last,now;//定义两个字符串做记忆存储作用，在level大于3使用 
+  char filename[size];
+  string receive;
+  vector <char> ways;
+  string test="switch case else if auto break char const continue default do double enum extern float for goto int long register return short signed sizeof	static struct typedef union unsigned void volatile while"; 
+  //test是拿来作为参照表的，有点超长 
+  fstream infile;//就可以使用c++自带的open函数，另外一种是ifstream 定义一个打开的流 
+  //ofstream outfile("f:\\软件工程\\out.txt", ios::app); 
+  //输出到指定文件位置 
+  //仍验证输出是否是正常判断，加入干扰项目之后然可以正确运行 
+  cout << "Please enter the file's name:\n";
+  cin.getline(filename, size);
+  cout << "Level(max is 3):\n";
+  cin >> level;
+  infile.open(filename); 
+
+  if (!infile.is_open()) {//判定文件是否打开 
+        cout << "Could not find the file\n";
+        cout << "Program terminating\n";
+        exit(EXIT_FAILURE);
+    }
+    infile >> receive;//不放在外面会导致循环之前输出空行
+    while (!infile.eof()) {
+      if (infile.good()) {
+      	for(j=2;j<9;j++){
+      	  back=test.find(receive.substr(0, j));
+      	  if(back<test.size()&&(receive[j]==NULL||receive[j]=='('
+			                    ||receive[j]=='{'||receive[j]==';'
+								||receive[j]==':')){
+      	  	total++; //通过后续条件判断是否真的完成选择 
+      	  	outfile << receive << endl; 
+      	  	if(back==0) ways.push_back('A');
+      	  	else if(back==7) ways.push_back('B');
+      	  	break;
+			}
+		  }
+		  //cout << receive << endl; //用来检验是否正常输出的 
+        infile >> receive;//用来前进代码用的 
+        }
+    }
+    cout <<"total num: " << total << endl;
+    //cout << ways.size() <<' ';
+    for(j=0;j<ways.size();j++){//将语句字符标志化，之后的if-else语句也会用到 
+ 	  if(ways[j]=='A'&&ways[j+1]=='B') {
+ 	  	switchnum++;
+ 	  	casenum[k]=0;
+	   }
+	   else if(ways[j]=='B'&&ways[j+1]=='A'){//核心算法，可以使得switch结构
+	   //判断不会出问题 
+	   	 casenum[k]++;
+	   	 k++;
+	   }
+	   else {
+	   	 casenum[k]++;
+	   }
+      //cout << ways[j] << ' ';
+      
+	}
+	if(level>=2){
+	  cout<<"switch num: "<<switchnum<<endl<< "case num:" ;
+      for(j=0;j<=k;j++)
+        cout<<' '<<casenum[j];
+      cout<<endl;		  
+	}
+
+  return 0;
+}
