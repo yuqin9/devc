@@ -1,0 +1,16 @@
+#include <iostream>
+#include <string.h>
+using namespace std;
+ 
+int main()
+{
+   string s="what if you dong";
+   string s1="ifif";
+   int position;
+   position=s.find(s1);
+   if(position==-1)
+    cout<<"not find"<<endl;
+   else
+    cout<<"position= "<<position<<endl;
+   return 0;
+}
