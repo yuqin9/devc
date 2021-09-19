@@ -1,0 +1,73 @@
+#include <cstdio>
+
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+
+char maps[30][30] = {};
+bool book[30][30] = {};
+int cnt = 0;
+
+
+void dfs(int stx, int sty)
+{
+    if(stx < 1 || stx > 10 || sty < 1 || sty > 10)
+    {
+        cnt++;
+        return;
+    }
+    if(!book[stx][sty] && maps[stx][sty] == 'U')
+    {
+        book[stx][sty] = true;
+        dfs(stx - 1, sty);
+        //book[stx][sty] = false;
+    }
+    if(!book[stx][sty] && maps[stx][sty] == 'D')
+    {
+        book[stx][sty] = true;
+        dfs(stx + 1, sty);
+        //book[stx][sty] = false;
+    }
+    if(!book[stx][sty] && maps[stx][sty] == 'L')
+    {
+        book[stx][sty] = true;
+        dfs(stx, sty - 1);
+        //book[stx][sty] = false;
+    }
+    if(!book[stx][sty] && maps[stx][sty] == 'R')
+    {
+        book[stx][sty] = true;
+        dfs(stx, sty + 1);
+        //book[stx][sty] = false;
+    }
+
+
+}
+int main()
+{
+    ///10 9
+    char ch;
+    for(int i = 1; i <= 10; i++)
+    {
+        for(int j = 1; j <= 10; j++)
+        {
+            cin >> maps[i][j];
+        }
+        getchar();
+    }
+    for(int i = 1; i <= 10; i++)
+    {
+        for(int j = 1; j <= 10; j++)
+        {
+            //book[i][j] = true;
+            dfs(i, j);
+            book[i][j] = false;
+            memset(book, 0, sizeof(book));
+        }
+    }
+    cout << cnt << endl;
+    return 0;
+}
